@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>채널톡 배차 요청 자동 분류·전달 — 배도연</title>
+<script>try{if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* Shared by the hub and the newer project pages. Same system as the CX
+   dashboard and 옹매니징 pages: Pretendard + JetBrains Mono, two colors only
+   (ink + one green --accent), white page, rules and space instead of boxes.
+   Always opens light; dark is opt-in via the toggle (key "theme", shared by
+   every page on the site). */
+:root{
+  --bg:#ffffff; --tint:#f3f5f4;
+  --ink:#111614; --ink-2:#48514d; --muted:#7c8581; --line:#e2e6e4; --rule:#111614;
+  --accent:#13795b; --accent-wash:#e6f2ec;
+  --font:'Pretendard Variable',Pretendard,system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-mono:'JetBrains Mono','Pretendard Variable',Pretendard,ui-monospace,"SF Mono",Menlo,monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#0c100e; --tint:#161c19;
+  --ink:#e9eeeb; --ink-2:#b4beb9; --muted:#808b86; --line:#252d29; --rule:#e9eeeb;
+  --accent:#5cc99f; --accent-wash:#14271f;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.75;padding-inline:24px;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+.page{max-width:880px;margin:0 auto;padding-block:96px 104px;display:flex;flex-direction:column;gap:104px;counter-reset:sec}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---- top bar: home link + theme toggle ---- */
+.home-link{position:absolute;top:calc(env(safe-area-inset-top,0px) + 22px);left:24px;font-size:13.5px;font-weight:600;color:var(--ink-2);text-decoration:none}
+.home-link:hover{color:var(--ink)}
+.theme-toggle{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:16px;width:34px;height:34px;padding:0;border:1px solid var(--line);background:var(--bg);cursor:pointer;display:grid;place-items:center;transition:border-color .15s}
+.theme-toggle::before{content:"";width:14px;height:14px;border-radius:50%;border:1.5px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.theme-toggle:hover{border-color:var(--ink)}
+.theme-toggle:focus-visible,.home-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---- shared type ---- */
+.eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.16em;color:var(--accent);text-transform:uppercase}
+.section{display:flex;flex-direction:column;gap:28px;counter-increment:sec}
+.section-head{display:flex;flex-direction:column;gap:10px}
+.section-head .kicker{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.section-head .kicker::before{content:counter(sec,decimal-leading-zero);color:var(--accent);margin-right:12px}
+.section-head h2{font-size:30px;font-weight:800;letter-spacing:-.035em;line-height:1.25}
+.section-head .dek{color:var(--ink-2);font-size:15.5px;max-width:60ch}
+
+/* ---- hub hero: photo + intro ---- */
+.intro{display:grid;grid-template-columns:240px 1fr;gap:44px;align-items:stretch}
+/* the photo stretches to the text block's height (portrait crop of the square original) */
+.intro .photo{width:240px;height:100%;min-height:240px;object-fit:cover;object-position:50% 35%;border-radius:4px;background:var(--tint)}
+.intro .text{display:flex;flex-direction:column;gap:14px}
+.intro h1{font-size:60px;font-weight:800;letter-spacing:-.045em;line-height:1.05}
+.intro .role{font-size:15px;font-weight:500;color:var(--ink-2)}
+.intro .lede{font-size:17.5px;color:var(--ink-2);line-height:1.75;max-width:54ch;margin-top:6px}
+.intro .lede strong{color:var(--ink);font-weight:700;box-shadow:inset 0 -0.42em var(--accent-wash)}
+.contact{display:flex;flex-wrap:wrap;gap:6px 28px;margin-top:8px;font-size:14px}
+.contact span{display:flex;gap:10px;align-items:baseline}
+.contact .k{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+.contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all}
+
+/* ---- hub project list ---- */
+.projects{list-style:none;margin:0;padding:0;border-top:2px solid var(--rule);counter-reset:proj}
+.projects li{border-bottom:1px solid var(--line);counter-increment:proj}
+.projects a{display:grid;grid-template-columns:40px 1fr 150px;gap:6px 20px;padding:24px 0;text-decoration:none;align-items:start}
+.projects a::before{content:counter(proj,decimal-leading-zero);font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent);padding-top:5px}
+.projects .t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.projects .name{font-size:19px;font-weight:800;letter-spacing:-.025em;line-height:1.4}
+.projects .sub{font-size:14.5px;color:var(--ink-2)}
+.projects .where{font-size:13px;color:var(--muted);margin-top:4px}
+.projects .m{display:flex;flex-direction:column;align-items:flex-end;text-align:right;gap:2px}
+.projects .m b{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-.04em;line-height:1.1}
+.projects .m span{font-size:12.5px;color:var(--muted);line-height:1.45}
+.projects a:hover .name{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.projects a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+/* ---- dated rows (career, education) ---- */
+.rows{list-style:none;margin:0;padding:0}
+.rows li{display:grid;grid-template-columns:170px 1fr;gap:4px 20px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.rows li:first-child{border-top:2px solid var(--rule)}
+.rows .when{font-family:var(--font-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.rows b{font-weight:700}
+.rows .r{color:var(--ink-2)}
+.group + .group{margin-top:28px}
+.cols > .group + .group{margin-top:0}
+.group h3{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px}
+
+/* ---- two-column labelled lists (industries, work) ---- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.labelled{list-style:none;margin:0;padding:0;border-top:2px solid var(--rule)}
+.labelled li{padding:12px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.labelled b{font-size:15px;font-weight:700}
+.labelled span{font-size:14px;color:var(--ink-2)}
+
+/* ---- four questions ---- */
+.questions{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;counter-reset:q}
+.questions li{border-top:2px solid var(--rule);padding-top:16px;counter-increment:q;display:flex;flex-direction:column;gap:6px}
+.questions li::before{content:"Q"counter(q);font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent)}
+.questions b{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.questions span{font-size:14px;color:var(--ink-2)}
+
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.tools span{font-size:13.5px;padding:4px 10px;border-radius:3px;background:var(--tint);color:var(--ink-2)}
+
+/* ---- project page hero ---- */
+.case-hero{display:flex;flex-direction:column;gap:16px}
+.case-hero h1{font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1.15}
+.case-hero .lede{font-size:18px;color:var(--ink-2);max-width:56ch}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:24px;border-top:2px solid var(--rule);padding-top:18px}
+.meta div{display:flex;flex-direction:column;gap:4px;font-size:14.5px;font-weight:600;line-height:1.5;min-width:0}
+.meta b{font-size:12.5px;font-weight:700;color:var(--accent)}
+
+/* ---- proof strip ---- */
+.proof{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:2px solid var(--rule);padding-top:20px}
+.proof .tile{display:flex;flex-direction:column;gap:10px;min-width:0}
+.proof .v{font-family:var(--font-mono);font-size:40px;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.05em}
+.proof .l{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+
+/* ---- problem → hypothesis → action → check → result ---- */
+.steps{margin:0;border-top:2px solid var(--rule)}
+.steps > div{display:grid;grid-template-columns:120px 1fr;gap:6px 24px;padding:22px 0;border-bottom:1px solid var(--line)}
+.steps dt{font-size:13px;font-weight:700;color:var(--accent);padding-top:3px}
+.steps dd{margin:0;font-size:15.5px;line-height:1.8;color:var(--ink);min-width:0}
+.steps dd p + p,.steps dd p + ul,.steps dd ul + p{margin-top:10px}
+.steps ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps li{position:relative;padding-left:18px}
+.steps li::before{content:"–";position:absolute;left:0;color:var(--muted)}
+.steps ul ul{margin-top:6px}
+.steps ul ul li{font-size:14.5px;color:var(--ink-2)}
+.steps strong{font-weight:800}
+.steps code{font-family:var(--font-mono);font-size:.86em;background:var(--tint);padding:1px 6px;border-radius:3px}
+
+/* ---- flow diagram ---- */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px}
+.flow .node{flex:1 1 130px;border:1px solid var(--line);border-top:2px solid var(--rule);padding:14px;display:flex;flex-direction:column;gap:2px}
+.flow .node b{font-size:15px;font-weight:800}
+.flow .node span{font-size:12.5px;color:var(--muted)}
+.flow .arrow{display:grid;place-items:center;font-family:var(--font-mono);font-weight:600;color:var(--accent)}
+.branches{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.branches div{background:var(--tint);padding:14px;display:flex;flex-direction:column;gap:2px}
+.branches b{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--accent)}
+.branches span{font-size:13.5px;color:var(--ink-2)}
+
+/* ---- toggles (details/summary): title + one-line result, +/- marker ---- */
+.tg > summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:16px}
+.tg > summary::-webkit-details-marker{display:none}
+.tg > summary::after{content:"+";margin-left:auto;font-family:var(--font-mono);font-weight:600;font-size:20px;line-height:1.2;color:var(--accent);flex:none}
+.tg[open] > summary::after{content:"\2212"}
+.tg > summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.tg .sum{display:block;font-size:14px;font-weight:600;color:var(--accent);line-height:1.55;letter-spacing:0}
+.sec-tg > summary .section-head{flex:1;min-width:0}
+.sec-tg > :not(summary){margin-top:24px}
+.co-tag{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--font);font-size:13px;font-weight:600;letter-spacing:0;line-height:1.5;color:var(--ink-2);border:1px solid var(--line);border-radius:3px;padding:2px 9px}
+
+/* ---- "일하는 방식" values: four principles, 2x2, above the case cards ---- */
+.values{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;counter-reset:v}
+.values li{counter-increment:v;display:flex;flex-direction:column;gap:6px;padding-top:14px;border-top:1px solid var(--line)}
+.values li::before{content:counter(v,decimal-leading-zero);font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent)}
+.values b{font-size:17px;font-weight:800;letter-spacing:-.025em;line-height:1.4}
+.values span{font-size:14.5px;color:var(--ink-2);line-height:1.75}
+
+/* ---- "일하는 방식" cards: title, 2-3 lines, one figure line, details in a toggle ---- */
+.work-cards{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.work-card{border-top:2px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.work-card h3{font-size:19px;font-weight:800;letter-spacing:-.025em;line-height:1.4}
+.work-card > p{font-size:15px;color:var(--ink-2);line-height:1.75}
+.work-card .figure{font-size:14px;font-weight:700;color:var(--accent);line-height:1.6}
+.detail-tg{border-top:1px solid var(--line);margin-top:4px}
+.detail-tg > summary{padding:12px 0;font-size:14.5px;font-weight:700;color:var(--ink)}
+.detail-tg > summary .sum{font-weight:500;color:var(--muted);margin-top:2px}
+.detail{display:flex;flex-direction:column;gap:10px;font-size:14.5px;line-height:1.75;color:var(--ink);padding-bottom:8px}
+.detail p{color:var(--ink-2)}
+.detail strong{font-weight:800;color:var(--ink)}
+.detail ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.detail li{position:relative;padding-left:16px}
+.detail li::before{content:"–";position:absolute;left:0;color:var(--muted)}
+.detail ul ul{margin-top:6px}
+.detail ul ul li{font-size:14px;color:var(--ink-2)}
+.detail h4{margin:10px 0 0;font-size:14px;font-weight:800;color:var(--accent)}
+.detail .questions{grid-template-columns:1fr;gap:12px}
+.detail .questions li{padding-left:0;padding-top:10px;border-top-width:1px}
+.detail .questions li{gap:2px}
+.detail .questions li::before{content:"Q"counter(q);position:static;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent)}
+.detail .questions b{font-size:15px}
+
+/* ---- prev / next + footer ---- */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:2px solid var(--rule);padding-top:18px}
+.pager a{display:flex;flex-direction:column;gap:4px;text-decoration:none}
+.pager a.next{text-align:right}
+.pager small{font-size:12.5px;color:var(--muted)}
+.pager b{font-size:16px;font-weight:800;letter-spacing:-.02em}
+.pager a:hover b{text-decoration:underline;text-underline-offset:4px}
+footer{border-top:2px solid var(--rule);padding-top:26px;display:flex;flex-direction:column;gap:6px}
+footer .name{font-size:24px;font-weight:800;letter-spacing:-.035em}
+footer .org{font-size:14px;color:var(--ink-2)}
+footer .contact{margin-top:10px}
+
+@media (max-width:720px){
+  .cols > .group + .group{margin-top:28px}
+  .page{gap:80px;padding-block:80px 72px}
+  .intro{grid-template-columns:1fr;gap:24px}
+  .intro .photo{width:140px;height:auto;min-height:0;aspect-ratio:1}
+  .intro h1{font-size:46px}
+  .case-hero h1{font-size:34px}
+  .section-head h2{font-size:25px}
+  .projects a{grid-template-columns:28px 1fr;gap:4px 12px}
+  .projects .m{grid-column:2;align-items:flex-start;text-align:left;flex-direction:row;gap:10px;align-items:baseline;margin-top:6px}
+  .projects .m b{font-size:20px}
+  .rows li{grid-template-columns:1fr;gap:0}
+  .cols,.questions,.work-cards,.values{grid-template-columns:1fr}
+  .meta{grid-template-columns:1fr 1fr}
+  .proof{grid-template-columns:1fr;gap:20px}
+  .proof .v{font-size:34px}
+  .steps > div{grid-template-columns:1fr;gap:4px}
+  .flow{flex-direction:column}
+  .flow .arrow{transform:rotate(90deg);height:20px}
+  .branches{grid-template-columns:1fr}
+  .pager{grid-template-columns:1fr}
+  .pager a.next{text-align:left}
+}
+@media (max-width:420px){
+  body{padding-inline:18px}
+  .home-link{left:18px}
+  .intro h1{font-size:42px}
+}
+@media print{
+  :root,:root[data-theme="dark"]{
+    --bg:#ffffff; --tint:#f3f5f4;
+    --ink:#111614; --ink-2:#48514d; --muted:#7c8581; --line:#e2e6e4; --rule:#111614;
+    --accent:#13795b; --accent-wash:#e6f2ec;
+    color-scheme:light;
+  }
+  body{padding-inline:0;font-size:14px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .theme-toggle,.home-link,.pager{display:none!important}
+  .tg::details-content{content-visibility:visible;display:block}
+  .tg > summary::after{display:none}
+  .page{display:block;padding-block:0;max-width:none}
+  .page > * + *{margin-top:44px}
+  .section{display:block}
+  .section > * + *{margin-top:20px}
+  .projects li,.rows li,.steps > div,.questions li,.proof,.meta,.flow,.branches,.intro{break-inside:avoid}
+  .section-head{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<a class="home-link" href="index.html">← 배도연 포트폴리오</a>
+<button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크 모드로 보기"></button>
+<div class="page">
+
+  <header class="case-hero">
+    <span class="eyebrow">Side project</span>
+    <h1>채널톡 배차 요청 자동 분류·전달 <span class="co-tag">내이루리 · 2026</span></h1>
+    <p class="lede">직접 운영하던 라이더 채널톡에 배차 문의가 급증해, 정형 문의는 AI가 자동으로 넘기고 사람은 긴급 건에 집중하도록 바꿨습니다. 배차 요청 전달 수기 5분을 30초로.</p>
+    <div class="meta">
+      <div><b>소속</b>내이루리 · 사이드 프로젝트</div>
+      <div><b>역할</b>문제 정의 · 분류 정책 설계 · 직접 구현·운영</div>
+      <div><b>기간</b>2026.05.04 – 2026.05.08</div>
+      <div><b>도구</b>Python · Playwright · SQLite · Claude API · Slack Bot</div>
+    </div>
+  </header>
+
+  <section class="proof" aria-label="결과 수치">
+    <div class="tile"><span class="v num">30초</span><span class="l">배차 요청 전달 리드타임 (평균 5분 → 30초 이내)</span></div>
+    <div class="tile"><span class="v num">90%</span><span class="l">B마트 라이더 문의 중 배차 요청 같은 정형 문의 비중</span></div>
+    <div class="tile"><span class="v num">2,685건</span><span class="l">PoC 채널의 일평균 메시지 (라이더 348명)</span></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="kicker">Process</span>
+      <h2>문제에서 결과까지</h2>
+    </div>
+    <dl class="steps">
+      <div><dt>문제 인식</dt><dd>
+        <ul>
+          <li>팀에서 운영하던 B마트 라이더 채널톡에 배차 요청 문의가 급증했습니다. 문의의 약 90%가 "배차 더 주세요" 같은 정형 문의였습니다.</li>
+          <li>관리자가 22개 채널을 실시간으로 보며 배차방에 수기로 옮기느라 업무 시간의 70~80%를 모니터링에 썼고, 라이더는 요청 후 평균 5분(피크타임 최대 10분)을 기다려야 했습니다.</li>
+          <li>반복 업무에 묻혀 지각·사고 보고처럼 안전과 직결된 메시지를 놓칠 위험이 있었습니다.</li>
+        </ul>
+      </dd></div>
+      <div><dt>가설</dt><dd>정형 문의를 자동으로 가려내 배차방에 전달하면, 관리자가 사고·규제 같은 중요한 건에 집중할 수 있을 것이라고 봤습니다.</dd></div>
+      <div><dt>액션</dt><dd>
+        <ul>
+          <li>분류 기준을 현장에서 실제로 오가는 문장으로 정의해 프롬프트에 넣었습니다. 예시 없이 분류를 맡기지 않고, 실제 메시지 예시로 기준을 잡아 오분류를 줄였습니다 (아래 분류 기준 참고).</li>
+          <li><strong>판단이 애매한 메시지는 전부 Attention으로 분류해, 슬랙봇 연동으로 슬랙에 알림을 보내 사람이 확인하게 했습니다.</strong> 배차 요청을 놓치는 것보다 긴급 건을 자동으로 흘려보내는 것이 더 위험하다고 봤기 때문입니다.</li>
+          <li>공식 API가 없는 채널이라 Playwright로 화면을 30초 간격으로 읽어 새 문의를 감지했습니다.</li>
+          <li>라이더가 같은 요청을 연달아 보내 배차방이 도배되지 않도록, 라이더별 첫 요청 후 10분간 추가 요청은 게시하지 않게 SQLite로 제어했습니다.</li>
+        </ul>
+      </dd></div>
+      <div><dt>검증</dt><dd>
+        <ul>
+          <li>1개 채널 실시간 모니터링 기준 PoC (라이더 348명, 일평균 메시지 2,685건)</li>
+          <li>요청 감지부터 배차방 전달까지 걸린 시간을 수기 처리 시간과 비교</li>
+        </ul>
+      </dd></div>
+      <div><dt>결과</dt><dd>
+        <ul>
+          <li>배차 요청 전달 리드타임 <strong>평균 5분 → 30초 이내</strong></li>
+          <li>정형 배차 요청의 수기 전달 단계를 시스템으로 대체</li>
+          <li>개발팀 공식 API 연동 고도화를 위한 PRD 근거 마련</li>
+        </ul>
+      </dd></div>
+    </dl>
+  </section>
+
+  <section class="section">
+    <details class="tg sec-tg">
+    <summary><span class="section-head">
+      <span class="kicker">Flow</span>
+      <h2>처리 흐름과 분류 기준</h2>
+      <span class="sum">Dispatch → 배차운영방 자동 게시 · Attention → 슬랙봇 연동으로 슬랙 알림 · Ignore → 제외 (애매하면 Attention)</span>
+    </span></summary>
+    <div>
+      <div class="flow" role="img" aria-label="채널톡 인입, 30초 폴링, AI 분류, 10분 쿨다운 확인, 배차운영방 게시 또는 슬랙 알림">
+        <div class="node"><b>채널톡 인입</b><span>라이더 문의</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="node"><b>폴링</b><span>30초 간격 · Playwright</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="node"><b>AI 분류</b><span>Claude API · 3단계</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="node"><b>쿨다운 확인</b><span>10분 · SQLite</span></div>
+      </div>
+      <div class="branches">
+        <div><b>Dispatch</b><span>"추가 배차 부탁드립니다", "3분 후 도착" 같은 배차 요청 → 라이더 이름을 뽑아 정해진 문구로 배차운영방에 자동 게시</span></div>
+        <div><b>Attention</b><span>사고 보고("차 막혀요"), 지각·결근, 조건 클레임, 물음표가 있는 질문, 판단이 애매한 모든 메시지 → 슬랙봇 연동으로 슬랙에 알림</span></div>
+        <div><b>Ignore</b><span>"넵", "감사합니다", "수고하세요" 같은 단순 응답 → 제외</span></div>
+      </div>
+    </div>
+    </details>
+  </section>
+
+  <nav class="pager" aria-label="다른 프로젝트">
+    <a href="cs-dashboard.html"><small>← 이전</small><b>CS 대시보드</b></a>
+    <a class="next" href="ongmanaging.html"><small>다음 →</small><b>옹매니징</b></a>
+  </nav>
+
+  <footer>
+    <span class="name">배도연</span>
+    <span class="org">CX Lead · 아레스3 (어니스트플라워)</span>
+    <div class="contact"><span><span class="k">Email</span><span class="v">dy4885@gmail.com</span></span></div>
+  </footer>
+
+</div>
+<script>
+// Theme toggle. The page opens light; a saved "dark" choice is applied before
+// first paint by a one-line inline script in each page's <head>.
+(function(){
+  var root=document.documentElement, btn=document.getElementById('theme-toggle');
+  if(!btn) return;
+  function sync(){
+    var dark=root.getAttribute('data-theme')==='dark';
+    btn.setAttribute('aria-pressed',dark?'true':'false');
+    btn.setAttribute('aria-label',dark?'라이트 모드로 보기':'다크 모드로 보기');
+  }
+  btn.addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')!=='dark';
+    if(dark) root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme');
+    try{localStorage.setItem('theme',dark?'dark':'light')}catch(e){}
+    sync();
+  });
+  sync();
+})();
+
+// Print / save as PDF: open every <details>, then restore what was closed.
+addEventListener('beforeprint',function(){
+  document.querySelectorAll('details:not([open])').forEach(function(d){d.open=true;d.setAttribute('data-print-opened','')});
+});
+addEventListener('afterprint',function(){
+  document.querySelectorAll('details[data-print-opened]').forEach(function(d){d.open=false;d.removeAttribute('data-print-opened')});
+});
+</script>
+</body>
+</html>
