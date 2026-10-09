@@ -190,6 +190,31 @@ img{max-width:100%;height:auto;display:block}
 .detail .questions li::before{content:"Q"counter(q);position:static;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent)}
 .detail .questions b{font-size:15px}
 
+/* ---- screenshots (shared): click to enlarge ---- */
+.screen-card{display:flex;flex-direction:column;gap:8px;min-width:0}
+.screen-card button{all:unset;cursor:zoom-in;display:flex;justify-content:center;align-items:center;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--tint);transition:border-color .15s}
+.screen-card button:hover{border-color:var(--ink)}
+.screen-card button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.screen-card img{display:block;width:auto;max-width:100%;height:auto}
+.screen-card .cap{font-size:13px;color:var(--ink-2);line-height:1.6}
+.screen-card .cap strong{color:var(--ink);font-weight:700}
+.lightbox{position:fixed;inset:0;background:rgba(8,11,10,0.92);z-index:80;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 56px) 16px 32px;cursor:zoom-out}
+.lightbox img{display:block;max-width:min(1456px,100%);margin:0 auto;border-radius:4px}
+.lightbox .close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:16px;background:#ffffff;color:#111614;border:0;padding:7px 14px;font:600 13px var(--font);cursor:pointer}
+
+/* ---- 옹고잉: one VOC → one feature, with its design screens ---- */
+.og-feature{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--rule);padding-top:18px}
+.og-feature + .og-feature{margin-top:40px}
+.og-num{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent)}
+.og-feature h3{font-size:20px;font-weight:800;letter-spacing:-.025em}
+.og-voc{font-size:16px;font-weight:700;color:var(--ink);border-left:2px solid var(--accent);padding-left:14px;line-height:1.6}
+.og-voc span{font-weight:500;color:var(--muted);font-size:14px}
+.og-feature > p:not(.og-voc){font-size:15px;color:var(--ink-2);line-height:1.8}
+.og-feature > p strong{color:var(--ink);font-weight:800}
+.og-shots{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;margin-top:6px}
+.og-shots .screen-card{flex:1 1 260px;max-width:100%}
+.og-shots .screen-card button{padding:10px}
+
 /* ---- prev / next + footer ---- */
 .pager{display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:2px solid var(--rule);padding-top:18px}
 .pager a{display:flex;flex-direction:column;gap:4px;text-decoration:none}
@@ -338,7 +363,7 @@ footer .contact{margin-top:10px}
   </section>
 
   <nav class="pager" aria-label="다른 프로젝트">
-    <a href="cs-dashboard.html"><small>← 이전</small><b>CS 대시보드</b></a>
+    <a href="onggoing.html"><small>← 이전</small><b>옹고잉 배송앱</b></a>
     <a class="next" href="ongmanaging.html"><small>다음 →</small><b>옹매니징</b></a>
   </nav>
 
