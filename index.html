@@ -404,6 +404,16 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 @media (max-width:560px){.p-cs .compare-grid{grid-template-columns:1fr;gap:28px}}
 @media (max-width:420px){.p-cs .hero h1{font-size:42px}
 .p-cs .proof .tile .v{font-size:32px}}
+.p-cs .diag-sum{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.p-cs .pe{list-style:none;margin:0;padding:0;border-top:2px solid var(--rule)}
+.p-cs .pe li{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.65}
+.p-cs .pe .was{color:var(--muted);padding-left:20px;position:relative}
+.p-cs .pe .was::before{content:"\2212";position:absolute;left:0;font-family:var(--font-mono);font-weight:600}
+.p-cs .pe .now{color:var(--ink);font-weight:600;padding-left:20px;position:relative}
+.p-cs .pe .now::before{content:"+";position:absolute;left:0;font-family:var(--font-mono);font-weight:600;color:var(--accent)}
+.p-cs .diag-link{align-self:flex-start;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.p-cs .diag-link:hover{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){.p-cs .pe li{grid-template-columns:1fr}}
 .p-cs .ba{display:flex;flex-direction:column;gap:14px}
 .p-cs .ba-lab{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
 .p-cs .ba-lab b{font-family:var(--font-body);font-size:15px;letter-spacing:-.01em;text-transform:none;color:var(--ink);margin-left:6px}
@@ -867,6 +877,17 @@ html.js.panel-open,html.js.panel-open body{overflow:hidden}
       <span class="kicker">Why</span>
       <h2>왜 만들었나</h2>
       <p class="dek">CS 지표를 보려면 목적별로 흩어진 구글 스프레드시트를 하나씩 따로 열어보고, 매번 손으로 채워야 했습니다. 그 지표들을 DB에 연동된 화면 하나에 모았습니다.</p>
+    </div>
+    <div class="diag-sum">
+      <p class="ba-lab">Pain → Ease · <b>매주 겪던 불편이 이렇게 바뀌었습니다</b></p>
+      <ol class="pe">
+        <li><span class="was">매주 어드민에서 데이터를 내려받아 열을 추가하고, 나누고, 시트 4곳에 붙여넣었습니다.</span><span class="now">사내 DB에 연동돼, 열면 바로 최신 지표가 보입니다.</span></li>
+        <li><span class="was">같은 지표도 어느 시트에서 보느냐에 따라 숫자가 달라, 보고 전에 숫자부터 맞춰야 했습니다.</span><span class="now">지표 정의를 하나로 정해, 어디서 봐도 같은 숫자가 나옵니다.</span></li>
+        <li><span class="was">지난주와 비교하려면 날짜가 가로로 쌓인 표를 옆으로 한참 넘겨야 했습니다.</span><span class="now">주간·월간 비교가 탭 하나에 정리돼 있습니다.</span></li>
+        <li><span class="was">사고가 몰린 상품이나 시즌 이슈는 사람이 직접 찾아내야 했습니다.</span><span class="now">요주의 상품과 시즌 알림을 대시보드가 먼저 띄웁니다.</span></li>
+        <li><span class="was">지표를 공유하려면 고객 정보가 담긴 원본까지 함께 공유됐습니다.</span><span class="now">지표만 보여주고, 고객 이름은 마스킹합니다.</span></li>
+      </ol>
+      <a class="diag-link" href="cs-diagnosis.html">이전 시트를 수식 단위까지 뜯어본 진단 기록 보기 →</a>
     </div>
     <div class="ba">
       <p class="ba-lab">Before · <b>목적별 시트 4개</b></p>
