@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>CS/CX 메인 대시보드 진단 — 배도연</title>
+<title>CS/CX 메인 대시보드 진단 | 배도연</title>
 <script>try{if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
@@ -132,7 +132,7 @@ img{max-width:100%;height:auto;display:block}
 .steps dd p + p,.steps dd p + ul,.steps dd ul + p{margin-top:10px}
 .steps ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .steps li{position:relative;padding-left:18px}
-.steps li::before{content:"–";position:absolute;left:0;color:var(--muted)}
+.steps li::before{content:"•";font-size:.7em;top:.55em;position:absolute;left:0;color:var(--muted)}
 .steps ul ul{margin-top:6px}
 .steps ul ul li{font-size:14.5px;color:var(--ink-2)}
 .steps strong{font-weight:800}
@@ -181,7 +181,7 @@ img{max-width:100%;height:auto;display:block}
 .detail strong{font-weight:800;color:var(--ink)}
 .detail ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .detail li{position:relative;padding-left:16px}
-.detail li::before{content:"–";position:absolute;left:0;color:var(--muted)}
+.detail li::before{content:"•";font-size:.7em;top:.55em;position:absolute;left:0;color:var(--muted)}
 .detail ul ul{margin-top:6px}
 .detail ul ul li{font-size:14px;color:var(--ink-2)}
 .detail h4{margin:10px 0 0;font-size:14px;font-weight:800;color:var(--accent)}
@@ -198,7 +198,7 @@ img{max-width:100%;height:auto;display:block}
 .screen-card button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .screen-card img{display:block;width:auto;max-width:100%;height:auto}
 .screen-card .cap{font-size:13px;color:var(--ink-2);line-height:1.6}
-.screen-card .cap strong{color:var(--ink);font-weight:700}
+.screen-card .cap strong{display:block;color:var(--ink);font-weight:700}
 .lightbox{position:fixed;inset:0;background:rgba(8,11,10,0.92);z-index:80;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 56px) 16px 32px;cursor:zoom-out}
 .lightbox img{display:block;max-width:min(1456px,100%);margin:0 auto;border-radius:4px}
 .lightbox .close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:16px;background:#ffffff;color:#111614;border:0;padding:7px 14px;font:600 13px var(--font);cursor:pointer}
