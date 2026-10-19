@@ -430,7 +430,7 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
     <div class="section-head">
       <span class="kicker">Case study</span>
       <h2>숫자가 틀렸던 순간들</h2>
-      <p class="dek">16건 중 두 가지를 자세히 풀었습니다. 둘 다 "화면 수치가 이상하다"는 의심에서 시작해, raw 데이터 대조로 끝났습니다.</p>
+      <p class="dek">16건 중 세 가지를 자세히 풀었습니다. 앞의 둘은 "화면 수치가 이상하다"는 의심에서 시작해 raw 데이터 대조로 끝났고, 마지막은 기준 자체를 두고 팀과 맞춘 경우입니다.</p>
     </div>
 
     <details class="tg case-tg" open>
@@ -469,6 +469,26 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
       <div class="result">
         <span class="r-label">검증 결과</span>
         <span class="r-value num">파싱 후 총 건수 8,670건으로 원본과 정확히 일치 · 아세비 8월 주문 110건 → 170건(수기 집계와 일치)</span>
+      </div>
+    </article>
+    </details>
+
+    <details class="tg case-tg">
+      <summary class="case-head"><h3>클레임 코스트 기준을 CX가 정의해 MD 대시보드에 반영</h3><span class="sum">재발송 비용 53건 빈칸 발견 · 2026년 데이터로 수령일 기준 정립 → MD 대시보드도 상품별 비용 추산 가능</span></summary>
+    <article class="case">
+      <dl class="case-rows">
+        <dt>증상</dt>
+        <dd>CS 대시보드에 클레임 코스트 로직을 넣으려고 기존 CS비용 다운로드를 1~9월 전수 대조. 환불·반품은 100% 일치, 재발송은 정산가가 DB에 있는데도 <strong>53건</strong>이 빈칸.</dd>
+        <dt>원인</dt>
+        <dd>재발송만 있는 날짜·상품이 집계에서 빠짐. 또 접수일 기준이라 이번 주 접수 사고의 평균 <strong>16%</strong>가 지난주 발송 상품이어서 상품별 사고가 시점과 맞지 않음.</dd>
+        <dt>범위</dt>
+        <dd>믿을 수 없는 데이터 위에 대시보드를 빌드할 수는 없어서 DBeaver로 기간을 바꿔 사고접수율을 확인. 사고 컬럼 태깅은 <strong>2024년</strong>, 세부 태깅은 <strong>2025년 7월</strong>에야 정립됐음. 개발자와 가장 정확한 <strong>2026년</strong> 데이터만 파기로 정함.</dd>
+        <dt>대응</dt>
+        <dd>CX 운영에는 수령일 기준이 맞다고 판단. 이번 주 사고의 16%가 지난주 주문이라, 접수일 기준이면 이번 주 사고율이 이번 주 상품과 연관이 약해 왜곡되고 나중에 다시 분류해야 함. 수령일을 보는 즉시 해당 주에 귀속하는 편이 낫다고 MD와 개발자에게 설명하고, 처리 시점 기준 요청과 맞서며 끝까지 조율.</dd>
+      </dl>
+      <div class="result">
+        <span class="r-label">결론</span>
+        <span class="r-value num">원주문 수령일 기준으로 정립 · MD 대시보드에서도 상품별 클레임 비용을 정확히 추산</span>
       </div>
     </article>
     </details>

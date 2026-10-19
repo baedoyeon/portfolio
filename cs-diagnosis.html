@@ -166,6 +166,7 @@ img{max-width:100%;height:auto;display:block}
 .values li::before{content:counter(v,decimal-leading-zero);font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent)}
 .values b{font-size:17px;font-weight:800;letter-spacing:-.025em;line-height:1.4}
 .values span{font-size:14.5px;color:var(--ink-2);line-height:1.75}
+.values li:last-child:nth-child(odd){grid-column:1/-1}
 
 /* ---- "일하는 방식" cards: title, 2-3 lines, one figure line, details in a toggle ---- */
 .work-cards{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
