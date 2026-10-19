@@ -79,6 +79,9 @@ img{max-width:100%;height:auto;display:block}
 .projects .m b{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-.04em;line-height:1.1}
 .projects .m span{font-size:12.5px;color:var(--muted);line-height:1.45}
 .projects a:hover .name{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.projects .m .more{font-size:12.5px;font-weight:600;color:var(--ink);margin-top:8px;line-height:1.4;white-space:nowrap}
+.projects .more i{display:inline-block;font-style:normal;transition:transform .15s}
+.projects a:hover .more i{transform:translateX(3px)}
 .projects a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 
 /* ---- dated rows (career, education) ---- */
@@ -240,6 +243,7 @@ footer .contact{margin-top:10px}
   .projects a{grid-template-columns:28px 1fr;gap:4px 12px}
   .projects .m{grid-column:2;align-items:flex-start;text-align:left;flex-direction:row;gap:10px;align-items:baseline;margin-top:6px}
   .projects .m b{font-size:20px}
+  .projects .m .more{margin:0 0 0 auto}
   .rows li{grid-template-columns:1fr;gap:0}
   .cols,.questions,.work-cards,.values{grid-template-columns:1fr}
   .meta{grid-template-columns:1fr 1fr}
@@ -258,6 +262,7 @@ footer .contact{margin-top:10px}
   .intro h1{font-size:42px}
 }
 @media print{
+  .projects .more{display:none}
   :root,:root[data-theme="dark"]{
     --bg:#ffffff; --tint:#f3f5f4;
     --ink:#111614; --ink-2:#48514d; --muted:#7c8581; --line:#e2e6e4; --rule:#111614;
