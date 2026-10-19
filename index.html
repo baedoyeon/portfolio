@@ -59,6 +59,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 .s .section-head .kicker{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 .s .section-head .kicker::before{content:counter(sec,decimal-leading-zero);color:var(--accent);margin-right:12px}
 .s .section-head h2{font-size:30px;font-weight:800;letter-spacing:-.035em;line-height:1.25}
+.s .section-head h2 .hint{display:inline-block;margin-left:14px;font-size:14px;font-weight:500;letter-spacing:0;color:var(--muted);vertical-align:middle}
 .s .section-head .dek{color:var(--ink-2);font-size:15.5px;max-width:60ch}
 .s .intro{display:grid;grid-template-columns:240px 1fr;gap:44px;align-items:stretch}
 .s .intro .photo{width:240px;height:100%;min-height:240px;object-fit:cover;object-position:50% 35%;border-radius:4px;background:var(--tint)}
@@ -73,7 +74,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 .s .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all}
 .s .projects{list-style:none;margin:0;padding:0;border-top:2px solid var(--rule);counter-reset:proj}
 .s .projects li{border-bottom:1px solid var(--line);counter-increment:proj}
-.s .projects a{display:grid;grid-template-columns:40px 1fr 150px;gap:6px 20px;padding:24px 0;text-decoration:none;align-items:start}
+.s .projects a{display:grid;grid-template-columns:40px 1fr 175px;gap:6px 20px;padding:24px 0;text-decoration:none;align-items:start}
 .s .projects a::before{content:counter(proj,decimal-leading-zero);font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent);padding-top:5px}
 .s .projects .t{display:flex;flex-direction:column;gap:4px;min-width:0}
 .s .projects .name{font-size:19px;font-weight:800;letter-spacing:-.025em;line-height:1.4}
@@ -83,7 +84,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 .s .projects .m b{font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-.04em;line-height:1.1}
 .s .projects .m span{font-size:12.5px;color:var(--muted);line-height:1.45}
 .s .projects a:hover .name{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
-.s .projects .m .more{font-size:12.5px;font-weight:600;color:var(--ink);margin-top:8px;line-height:1.4;white-space:nowrap}
+.s .projects .m{grid-column:3;grid-row:1 / span 2}
+.s .projects .more{grid-column:2;grid-row:2;align-self:start;margin-top:4px;font-size:13px;font-weight:700;color:var(--ink);line-height:1.4}
 .s .projects .more i{display:inline-block;font-style:normal;transition:transform .15s}
 .s .projects a:hover .more i{transform:translateX(3px)}
 .s .projects a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
@@ -215,10 +217,12 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 .s .intro h1{font-size:46px}
 .s .case-hero h1{font-size:34px}
 .s .section-head h2{font-size:25px}
+.s .section-head h2 .hint{display:block;margin:6px 0 0}
 .s .projects a{grid-template-columns:28px 1fr;gap:4px 12px}
 .s .projects .m{grid-column:2;align-items:flex-start;text-align:left;flex-direction:row;gap:10px;align-items:baseline;margin-top:6px}
 .s .projects .m b{font-size:20px}
-.s .projects .m .more{margin:0 0 0 auto}
+.s .projects .m,.s .projects .more{grid-row:auto}
+.s .projects .more{grid-column:2;margin-top:2px}
 .s .rows li{grid-template-columns:1fr;gap:0}
 .s .cols,.s .questions,.s .work-cards,.s .values{grid-template-columns:1fr}
 .s .meta{grid-template-columns:1fr 1fr}
@@ -232,7 +236,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 .s .pager a.next{text-align:left}}
 @media (max-width:420px){.s .home-link{left:18px}
 .s .intro h1{font-size:42px}}
-@media print{.s .projects .more{display:none}
+@media print{.s .section-head h2 .hint{display:none}
+.s .projects .more{display:none}
 :root,:root[data-theme="dark"]{
     --bg:#ffffff; --tint:#f3f5f4;
     --ink:#111614; --ink-2:#48514d; --muted:#7c8581; --line:#e2e6e4; --rule:#111614;
@@ -684,24 +689,28 @@ html.js.panel-open,html.js.panel-open body{overflow:hidden}
   <section class="section">
     <div class="section-head">
       <span class="kicker">Projects</span>
-      <h2>주요 포트폴리오</h2>
+      <h2>주요 포트폴리오<span class="hint">항목을 누르면 자세히 볼 수 있습니다</span></h2>
     </div>
     <ol class="projects" id="projects">
       <li><a href="#cs-dashboard">
         <span class="t"><span class="name">CS 대시보드</span><span class="sub">손으로 채우던 CS 지표를 자동 대시보드로</span><span class="where">아레스3 · 2026.07 ~ 2026.09</span></span>
-        <span class="m"><b class="num">4 → 1</b><span>수기 시트 4개 →<br>자동 대시보드 1개</span><span class="more">자세히 보기 <i>→</i></span></span>
+        <span class="m"><b class="num">4 → 1</b><span>수기 시트 4개 →<br>자동 대시보드 1개</span></span>
+        <span class="more">자세히 보기 <i>→</i></span>
       </a></li>
       <li><a href="#dispatch">
         <span class="t"><span class="name">채널톡 배차 요청 자동 분류·전달</span><span class="sub">배차 문의가 몰리자 정형 문의를 AI로 자동 분류해 수기 5분을 30초로</span><span class="where">내이루리 · 사이드 프로젝트 · 2026.05</span></span>
-        <span class="m"><b class="num">30초</b><span>배차 요청 전달<br>(평균 5분 → 30초)</span><span class="more">자세히 보기 <i>→</i></span></span>
+        <span class="m"><b class="num">30초</b><span>배차 요청 전달<br>(평균 5분 → 30초)</span></span>
+        <span class="more">자세히 보기 <i>→</i></span>
       </a></li>
       <li><a href="#ongmanaging">
         <span class="t"><span class="name">옹매니징 · 배송원 계약·정산 관리 시스템</span><span class="sub">산정 기준부터 세워 수당 오류 민원을 없앰</span><span class="where">내이루리 · 2026.02 ~ 2026.04</span></span>
-        <span class="m"><b class="num">0회</b><span>수당 오류 민원<br>(월 1~3회 → 0회)</span><span class="more">자세히 보기 <i>→</i></span></span>
+        <span class="m"><b class="num">0회</b><span>수당 오류 민원<br>(월 1~3회 → 0회)</span></span>
+        <span class="more">자세히 보기 <i>→</i></span>
       </a></li>
       <li><a href="#onggoing">
         <span class="t"><span class="name">옹고잉 배송앱</span><span class="sub">배송원·고객 VOC를 배송앱 기능 4개로 만들고, QR 검수로 오상차 해소</span><span class="where">내이루리 · 2023.09 ~ 2024.01</span></span>
-        <span class="m"><b class="num">4개</b><span>VOC에서 나온<br>신규 기능</span><span class="more">자세히 보기 <i>→</i></span></span>
+        <span class="m"><b class="num">4개</b><span>VOC에서 나온<br>신규 기능</span></span>
+        <span class="more">자세히 보기 <i>→</i></span>
       </a></li>
     </ol>
   </section>
