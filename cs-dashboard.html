@@ -453,7 +453,7 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
     <article class="case">
       <dl class="case-rows">
         <dt>계기</dt>
-        <dd>CS 대시보드에 클레임 코스트를 넣으려고 기존 CS비용 다운로드를 1~9월 전수 대조. 환불·반품은 <strong>100%</strong> 맞았지만, 재발송 비용은 DB에 정산가가 있는데도 <strong>53건</strong>이 비어 있었음.</dd>
+        <dd>CS 대시보드에 클레임 코스트를 넣으려고 기존 CS비용 다운로드를 1~9월 전수 대조. 환불·반품은 <strong>100%</strong> 맞았지만, 재발송 비용은 DB에 정산가가 있는데도 <strong>53건</strong>이 비어 있었음. API로 연동해도 빈 데이터로 남는 것이 치명적.</dd>
         <dt>범위</dt>
         <dd>DBeaver로 <strong>2024~2026년</strong> 사고접수율을 확인해, 태깅이 가장 정확한 <strong>2026년</strong> 데이터만 쓰기로 함.</dd>
         <dt>원인</dt>
@@ -483,10 +483,10 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
       <ol class="doc-toc">
         <li><span class="t">화면별 필요 데이터</span><span class="d">탭 8개가 각각 어떤 데이터를 쓰는지, 실제 화면 스크린샷과 함께</span></li>
         <li><span class="t">연동 우선순위·주기</span><span class="d">클레임비용 계산 자동화 요청에 맞춰 주문·사고접수 데이터부터</span></li>
-        <li><span class="t">발송불가율 현재 로직</span><span class="d">매주 직접 돌리던 SQL과 판정 기준</span></li>
+        <li><span class="t">발송불가율 현재 로직</span><span class="d">직접 돌리던 SQL과 판정 기준</span></li>
         <li><span class="t">컬럼 참고</span><span class="d">저장소 권한이 없어도 확인할 수 있게 실제 컬럼을 문서에 옮김</span></li>
       </ol>
-      <p class="doc-note">주기 숫자보다 <strong>"마지막 조회 이후 새로 생긴 것만 받을 수 있는지(증분 조회)"</strong>가 더 중요하다는 질문을 먼저 던졌고, 주문 데이터에 컬럼 하나만 추가되면 매주 따로 돌리던 SQL이 필요 없어진다는 제안으로 마무리했습니다.</p>
+      <p class="doc-note">발송불가율은 마지막 출고 시간인 <strong>18시</strong>에 SQL로 계산하면 값이 나옵니다. 그 계산이 <strong>하루에 한 번 18시에 자동으로 실행</strong>되도록 요청했습니다.</p>
       <p class="doc-private">회사 내부 정보가 담겨 있어 원문은 공개하지 않습니다.</p>
     </div>
   </section>
