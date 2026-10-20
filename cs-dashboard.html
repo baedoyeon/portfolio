@@ -319,7 +319,7 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
   </section>
 
   <section class="proof" aria-label="작업 요약 수치">
-    <div class="tile"><div class="v num">43</div><div class="l">3개월(7~9월) 동안의 커밋</div></div>
+    <div class="tile"><div class="v num">1건</div><div class="l">DB 연동 중 개발자에게 받은 질문 (데이터 범위·기간)</div></div>
     <div class="tile"><div class="v num">16</div><div class="l">발견·기록한 이슈 (데이터 13 · 보안·개인정보 2 · 저장 1)</div></div>
     <div class="tile"><div class="v num">36%</div><div class="l">한 버그로 조용히 사라지던 주문 행 (8,670행 중 3,140행)</div></div>
     <div class="tile"><div class="v num">10배</div><div class="l">부풀려져 있던 재발송비용을 바로잡음</div></div>
@@ -403,31 +403,6 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
 
   <section class="section">
     <div class="section-head">
-      <span class="kicker">Approach</span>
-      <h2>일하는 방식</h2>
-      <p class="dek">세 가지가 한 세트로 돌아갑니다. CX 판단이 먼저고, 빌드와 검증은 그 판단을 숫자로 증명하는 수단입니다.</p>
-    </div>
-    <div class="pillars">
-      <div class="pillar">
-        <span class="tag">01 · CX 판단</span>
-        <h3>무엇을 셀지 먼저 정한다</h3>
-        <p>반려 건을 사고로 셀지, 주간 집계를 무슨 요일부터 끊을지까지 모두 CS 운영 기준으로 직접 결정했습니다. 그 기준은 코드 전체에 일관되게 반영했습니다.</p>
-      </div>
-      <div class="pillar">
-        <span class="tag">02 · 직접 빌드</span>
-        <h3>필요한 도구는 직접 만든다</h3>
-        <p>React/TypeScript로 CS 대시보드를 기획부터 구현까지 진행했습니다. AI와 페어링했지만, 무엇을 만들지·무엇이 맞는지는 끝까지 제가 판단했습니다.</p>
-      </div>
-      <div class="pillar">
-        <span class="tag">03 · 데이터 검증</span>
-        <h3>숫자는 raw 데이터로 끝까지 판다</h3>
-        <p>"숫자가 이상한데?"라는 의심이 들면 화면을 믿지 않고 raw CSV를 직접 열어 대조했습니다. 그렇게 찾은 데이터 오류만 13건입니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
       <span class="kicker">Case study</span>
       <h2>숫자가 틀렸던 순간들</h2>
       <p class="dek">16건 중 세 가지를 자세히 풀었습니다. 앞의 둘은 "화면 수치가 이상하다"는 의심에서 시작해 raw 데이터 대조로 끝났고, 마지막은 기준 자체를 두고 팀과 맞춘 경우입니다.</p>
@@ -474,21 +449,21 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
     </details>
 
     <details class="tg case-tg">
-      <summary class="case-head"><h3>클레임 코스트 기준을 CX가 정의해 MD 대시보드에 반영</h3><span class="sum">재발송 비용 53건 빈칸 발견 · 2026년 데이터로 수령일 기준 정립 → MD 대시보드도 상품별 비용 추산 가능</span></summary>
+      <summary class="case-head"><h3>빠진 재발송 비용을 찾다가 클레임 코스트 기준까지 바로잡음</h3><span class="sum">재발송 비용 53건이 비어 있었음 → 수령일 기준으로 통일, MD 대시보드도 상품별 클레임 비용을 정확히 봄</span></summary>
     <article class="case">
       <dl class="case-rows">
-        <dt>증상</dt>
-        <dd>CS 대시보드에 클레임 코스트 로직을 넣으려고 기존 CS비용 다운로드를 1~9월 전수 대조. 환불·반품은 100% 일치, 재발송은 정산가가 DB에 있는데도 <strong>53건</strong>이 빈칸.</dd>
-        <dt>원인</dt>
-        <dd>재발송만 있는 날짜·상품이 집계에서 빠짐. 또 접수일 기준이라 이번 주 접수 사고의 평균 <strong>16%</strong>가 지난주 발송 상품이어서 상품별 사고가 시점과 맞지 않음.</dd>
+        <dt>계기</dt>
+        <dd>CS 대시보드에 클레임 코스트를 넣으려고 기존 CS비용 다운로드를 1~9월 전수 대조. 환불·반품은 <strong>100%</strong> 맞았지만, 재발송 비용은 DB에 정산가가 있는데도 <strong>53건</strong>이 비어 있었음.</dd>
         <dt>범위</dt>
-        <dd>믿을 수 없는 데이터 위에 대시보드를 빌드할 수는 없어서 DBeaver로 기간을 바꿔 사고접수율을 확인. 사고 컬럼 태깅은 <strong>2024년</strong>, 세부 태깅은 <strong>2025년 7월</strong>에야 정립됐음. 개발자와 가장 정확한 <strong>2026년</strong> 데이터만 파기로 정함.</dd>
-        <dt>대응</dt>
-        <dd>CX 운영에는 수령일 기준이 맞다고 판단. 이번 주 사고의 16%가 지난주 주문이라, 접수일 기준이면 이번 주 사고율이 이번 주 상품과 연관이 약해 왜곡되고 나중에 다시 분류해야 함. 수령일을 보는 즉시 해당 주에 귀속하는 편이 낫다고 MD와 개발자에게 설명하고, 처리 시점 기준 요청과 맞서며 끝까지 조율.</dd>
+        <dd>DBeaver로 <strong>2024~2026년</strong> 사고접수율을 확인해, 태깅이 가장 정확한 <strong>2026년</strong> 데이터만 쓰기로 함.</dd>
+        <dt>원인</dt>
+        <dd>① 재발송 주문만 있는 날짜·상품의 비용이 집계에서 빠짐. ② 접수일 기준이라 이번 주 접수 사고의 <strong>16%</strong>가 지난주에 보낸 상품이어서 시점이 안 맞음. ③ 그래서 상품별 사고율이 왜곡됨. 예: 수국을 지난주 100개, 이번 주 20개 보냈고 지난주 사고 2건이 이번 주에 접수되면, 이번 주 사고율이 <strong>10%</strong>로 나옴(실제는 지난주 2%).</dd>
+        <dt>판단</dt>
+        <dd>수령일 기준이 맞다고 봄. 보는 즉시 그 주로 넣으면 나중에 다시 분류할 필요가 없음. 처리 시점 기준을 요청한 MD에게는 같은 데이터를 두 기준으로 비교해 설득.</dd>
       </dl>
       <div class="result">
-        <span class="r-label">결론</span>
-        <span class="r-value num">원주문 수령일 기준으로 정립 · MD 대시보드에서도 상품별 클레임 비용을 정확히 추산</span>
+        <span class="r-label">결과</span>
+        <span class="r-value num">클레임 비용을 원주문 수령일 기준으로 통일 · MD 대시보드도 상품별 클레임 비용을 정확히 볼 수 있게 됨</span>
       </div>
     </article>
     </details>
@@ -497,22 +472,7 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
   <section class="section">
     <div class="section-head">
       <span class="kicker">Collaboration</span>
-      <h2>개발자와 함께 운영 버전으로</h2>
-      <p class="dek">CSV로 돌던 프로토타입을 사내 DB·API에 연동하는 작업은 개발자와 함께 했습니다. 연동하면서 받은 질문은 "데이터를 어느 기간 범위로 가져올지 정해달라"는 것 하나뿐이었고, 그대로 운영 화면으로 이어졌습니다. 질문이 적었던 건 넘기기 전에 아래 세 가지를 준비해둔 덕분이라고 생각합니다. 직접 만들 수 있게 된 뒤로도, 만든 것을 개발자가 이어받기 쉬운 형태로 넘기는 것까지가 제 일이라고 봅니다.</p>
-    </div>
-    <div class="handoff">
-      <div class="handoff-row">
-        <h3>돌아가는 화면으로 건넸습니다</h3>
-        <p>말로 쓴 요구사항 대신, 탭 8개가 실제로 동작하는 프로토타입과 화면마다 쓰는 실제 데이터 컬럼명을 함께 넘겼습니다. 개발자가 제 의도를 추측하지 않고 데이터를 연결하는 일에만 집중할 수 있게 하려는 것이었습니다.</p>
-      </div>
-      <div class="handoff-row">
-        <h3>기준을 먼저 정해서 건넸습니다</h3>
-        <p>사고접수 건수에 무엇을 포함할지, 주간 집계를 <strong>월요일부터</strong> 끊을지, 시즌 알림을 <strong>클레임율 5% · 주문 20건 · 사고 4건 이상</strong>에서 띄울지. 숫자를 읽는 기준을 CS 쪽에서 먼저 결정해 코드와 문서에 남겼습니다.</p>
-      </div>
-      <div class="handoff-row">
-        <h3>틀리기 쉬운 곳을 먼저 알렸습니다</h3>
-        <p>이슈 16건을 증상·원인·수정·검증 결과로 정리한 디버그 로그를 함께 넘겼습니다. 주문번호가 행 단위 고유키가 아니라는 것처럼, 연동할 때도 똑같이 걸릴 수 있는 지점을 미리 볼 수 있게 했습니다.</p>
-      </div>
+      <h2>개발자에게 넘긴 요청서</h2>
     </div>
     <div class="request-doc">
       <div class="doc-head">
@@ -529,50 +489,6 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
       <p class="doc-note">주기 숫자보다 <strong>"마지막 조회 이후 새로 생긴 것만 받을 수 있는지(증분 조회)"</strong>가 더 중요하다는 질문을 먼저 던졌고, 주문 데이터에 컬럼 하나만 추가되면 매주 따로 돌리던 SQL이 필요 없어진다는 제안으로 마무리했습니다.</p>
       <p class="doc-private">회사 내부 정보가 담겨 있어 원문은 공개하지 않습니다.</p>
     </div>
-    <div class="principle">
-      <p class="q">"이게 틀렸어요"가 아니라 "이런 근거로 이렇게 보이는데, 확인 가능하실까요?"</p>
-      <p class="why">숫자가 이상해 보여서 개발자에게 요청할 때는, 제가 직접 확인한 것과 추측을 나눠 가설과 근거로 정리해 전달합니다. 아직 확인 전인 내용을 통보처럼 넘기지 않으려고 합니다.</p>
-    </div>
-  </section>
-
-  <section class="section trust">
-    <details class="tg sec-tg">
-    <summary><span class="section-head">
-      <span class="kicker">Trust &amp; Security</span>
-      <h2>개인정보·보안도 같은 눈으로 봤습니다</h2>
-      <span class="sum">리뷰 데이터 1,307명 중 186명(14.2%) 이름 노출 마스킹 결함 수정 · 외부 DB 키와 인증 없이 열린 DB 규칙 정리</span>
-    </span></summary>
-    <p class="dek">리스크를 찾을 때도 같은 방식입니다. 의심되면 실데이터로 직접 확인합니다.</p>
-    <div class="trust-grid">
-      <div class="trust-card">
-        <div class="t"><span class="dot"></span>고객명 마스킹 결함 발견</div>
-        <p>3글자 넘는 이름은 마스킹이 사실상 뚫려 있던 걸 발견했습니다. 리뷰 데이터 1,307명 중 186명(14.2%)의 이름이 사내 대시보드 화면에서 거의 그대로 보이고 있었습니다. 길이에 상관없이 첫 글자와 끝 글자만 남도록 고쳤습니다.</p>
-      </div>
-      <div class="trust-card">
-        <div class="t"><span class="dot"></span>초기 버전의 보안 설정 정리</div>
-        <p>초기 버전에 남아 있던 외부 DB 키와 인증 없이 열려 있던 DB 규칙을 발견해, 관련 코드와 의존성을 전부 걷어내고 브라우저 로컬 저장 방식으로 바꿨습니다.</p>
-      </div>
-    </div>
-    </details>
-  </section>
-
-  <section class="section">
-    <details class="tg sec-tg">
-    <summary><span class="section-head">
-      <span class="kicker">Timeline</span>
-      <h2>3개월, 43번의 커밋</h2>
-      <span class="sum">7월 8 · 8월 2 · 9월 33커밋. 9월에는 커밋 1건당 평균 약 120줄의 작은 단위로 수정</span>
-    </span></summary>
-    <div class="chart-card">
-      <div class="chart-wrap" role="img" aria-label="월별 커밋 수: 7월 8건, 8월 2건, 9월 33건">
-        <div class="bar-col"><span class="val num">8</span><div class="bar" style="height:27px"></div></div>
-        <div class="bar-col"><span class="val num">2</span><div class="bar" style="height:7px"></div></div>
-        <div class="bar-col"><span class="val num">33</span><div class="bar" style="height:110px"></div></div>
-      </div>
-      <div class="chart-labels" aria-hidden="true"><span>7월</span><span>8월</span><span>9월</span></div>
-      <p class="chart-note">7월에는 초안을 만들었습니다. 8월은 커밋이 2번뿐이지만 사고접수 모듈 추가(+4,049줄)와 대시보드 전면 개편(+11,074줄)이 들어간 가장 큰 작업이었습니다. 9월에는 실사용 데이터로 검증하며 찾은 문제를 커밋 1건당 평균 약 120줄(33건, 총 +4,017줄)의 작은 단위로 나눠 고쳤습니다.</p>
-    </div>
-    </details>
   </section>
 
   <nav class="pager" aria-label="다른 프로젝트">
