@@ -377,7 +377,7 @@ ul.pts b{color:var(--ink)}
   <div class="summary">
     <div class="sum-row"><span class="sev c">치명</span><div><a href="#f1">사람이 손으로 옮겨야 돌아가는 파이프라인</a><p>어드민에서 내려받아 열을 추가하고 텍스트를 나눈 뒤 마지막 행 아래에 붙여넣는 작업이 원본마다 반복됩니다. 한 단계라도 늦으면 위쪽 지표가 함께 비지만, 언제까지 반영됐는지는 어디에도 표시되지 않습니다.</p></div></div>
     <div class="sum-row"><span class="sev c">치명</span><div><a href="#f2">같은 지표, 다른 숫자</a><p>같은 기간 콜 문의 수가 시트마다 약 1.6배 다르고, 응대율은 150%까지 찍힙니다.</p></div></div>
-    <div class="sum-row"><span class="sev c">치명</span><div><a href="#f3">비율을 더하고, 평균을 다시 평균내는 집계</a><p>CPO(주문당 CS 비용, 상담사 평균 임금 기준) 합계가 일별 비율의 단순 합으로 계산되고, 연간 FRT는 월 평균의 평균입니다.</p></div></div>
+    <div class="sum-row"><span class="sev c">치명</span><div><a href="#f3">비율을 더하고, 평균을 다시 평균내는 집계</a><p>CPO(주문당 CS 비용, 상담사 인건비를 최저임금 수준으로 책정) 합계가 일별 비율의 단순 합으로 계산되고, 연간 FRT는 월 평균의 평균입니다.</p></div></div>
     <div class="sum-row"><span class="sev w">높음</span><div><a href="#f4">수식 안에 숨은 상수와 가정</a><p>서로 다른 인건비 가정 두 개, 성장률 1.5배, 한 달 30일 같은 가정이 셀마다 직접 박혀 있고 출처가 없습니다.</p></div></div>
     <div class="sum-row"><span class="sev w">높음</span><div><a href="#f5">365열 가로 구조와 행 번호 고정 참조</a><p>DAILY는 하루가 한 열인 가로형 표이고, 상위 시트는 이 표의 특정 행 번호를 고정으로 참조합니다. 행 하나만 끼워 넣어도 집계가 조용히 틀어집니다.</p></div></div>
     <div class="sum-row"><span class="sev w">높음</span><div><a href="#f6">태그 집계의 중복과 공백</a><p>부분 문자열 매칭으로 태그를 세서 한 문의가 여러 카테고리에 잡히고, 구매 유형은 절반 이상이 알 수 없음입니다.</p></div></div>
