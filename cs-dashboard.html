@@ -474,6 +474,7 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
         <li><span class="t">발송불가율 현재 로직</span><span class="d">직접 돌리던 SQL과 판정 기준</span></li>
         <li><span class="t">컬럼 참고</span><span class="d">저장소 권한이 없어도 확인할 수 있게 실제 컬럼을 문서에 옮김</span></li>
       </ol>
+      <p class="doc-note"><strong>발송불가율</strong>은 수령일을 지정한 주문 중 보내지 못한 비율입니다. 분자는 수령일 이동과 주문취소 수량이고, 분모는 해당 기간 전체 수량이며 주 단위·월 단위로 집계합니다. 이동 사유는 입고 지연, 작업 로스 등 모두 회사 쪽 문제입니다.</p>
       <p class="doc-note">발송불가율은 마지막 출고 시간인 <strong>18시</strong>에 SQL로 계산하면 값이 나옵니다. 그 계산이 <strong>하루에 한 번 18시에 자동으로 실행</strong>되도록 요청했습니다.</p>
       <p class="doc-private">회사 내부 정보가 담겨 있어 원문은 공개하지 않습니다.</p>
     </div>
