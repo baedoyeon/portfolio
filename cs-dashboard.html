@@ -384,6 +384,24 @@ footer .contact .v{font-family:var(--font-mono);color:var(--ink);user-select:all
       <h2>개발자에게 넘기기 전에 잡고, 넘긴 것</h2>
       <p class="dek">커밋하면서 이상한 숫자는 그냥 두지 않고 원본과 대조해 이슈 16건을 찾아 고쳤고, 디버그 로그와 함께 넘겨 개발자 질문은 1건이었습니다. 그중 세 가지를 눌러서 볼 수 있고, 함께 넘긴 요청서는 아래에 있습니다.</p>
     </div>
+    <div class="handoff">
+      <div class="handoff-row">
+        <h3>직접 데이터를 보고 잡았습니다</h3>
+        <p>AI가 만든 코드와 화면도 그대로 믿지 않고, 원본 데이터와 하나씩 대조했습니다.</p>
+      </div>
+      <div class="handoff-row">
+        <h3>기준을 먼저 정해서 넘겼습니다</h3>
+        <p>사고접수에 무엇을 포함할지, 주간 집계를 월요일부터 끊을지, 시즌 알림을 어느 수치에서 띄울지는 CS 쪽에서 먼저 정해, 개발자가 추측하지 않게 했습니다.</p>
+      </div>
+      <div class="handoff-row">
+        <h3>틀리기 쉬운 곳을 미리 알렸습니다</h3>
+        <p>이슈 16건을 증상, 원인, 수정, 검증 결과로 정리한 디버그 로그를 함께 넘겨, 연동할 때 같은 곳에서 걸리지 않게 했습니다.</p>
+      </div>
+      <div class="handoff-row">
+        <h3>근거로 이야기했습니다</h3>
+        <p>"이게 틀렸어요"가 아니라 "이런 근거로 이렇게 보이는데 확인 가능하실까요?"라고, 확인한 것과 추측을 나눠 전달했습니다.</p>
+      </div>
+    </div>
 
     <details class="tg case-tg">
       <summary class="case-head"><h3>프로토타입이 재발송비용을 10배로 부풀림</h3><span class="when mono">2026-08-27</span><span class="sum">프로토타입 화면에 1만원대 상품의 재발송비용이 6만원으로 표시됨 → 소수점 처리 오류를 고쳐 클레임비용/매출 6.9% → 2.25%</span></summary>
