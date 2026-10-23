@@ -824,7 +824,7 @@ html.js.panel-open,html.js.panel-open body{overflow:hidden}
       <ol class="pe">
         <li><span class="was">매주 어드민에서 데이터를 내려받아 열을 추가하고, 나누고, 시트 4곳에 붙여넣었습니다. 루틴 관리에 하루 약 30분이 들었습니다.</span><span class="now">사내 DB에 웹훅으로 실시간 연동돼, 열면 바로 최신 지표가 보입니다.</span></li>
         <li><span class="was">같은 지표도 어느 시트에서 보느냐에 따라 숫자가 달라, 보고 전에 숫자부터 맞춰야 했습니다.</span><span class="now">지표 정의를 하나로 정해, 어디서 봐도 같은 숫자가 나옵니다.</span></li>
-        <li><span class="was">한 고객이 부재중 전화를 여러 통 남겨도 1건 아웃바운드면 해결되는데, 통수대로 잡혀 응대율이 흔들렸습니다.</span><span class="now">한 고객의 부재중 전화는 1건으로 세도록 응대율 계산 기준을 정했습니다.</span></li>
+        <li><span class="was">부재중 전화가 4통 와도 이후 아웃바운드 1건이면 해결되는데, 4건이 모두 부재중으로 남아 응대율이 흔들렸습니다.</span><span class="now">이후 아웃바운드가 나가면 그 부재중은 부재중으로 세지 않도록 응대율 로직을 고쳤습니다.</span></li>
         <li><span class="was">사고가 몰린 상품이나 시즌 이슈는 사람이 직접 찾아내야 했습니다.</span><span class="now">요주의 상품과 시즌 알림을 대시보드가 먼저 띄웁니다.</span></li>
       </ol>
       <a class="diag-link" href="cs-diagnosis.html">이전 시트를 수식 단위까지 뜯어본 진단 기록 보기 →</a>
